@@ -143,7 +143,7 @@ public class BluetoothChatFragment extends Fragment
 }
 ```
 
-Override onActivityResult() and pass the result to BluetoothMessageService. It's important because this method will be triggered after User pick a device to connect or enable bluetooth so inform Service about the result.
+Override onActivityResult() and pass the result to BluetoothMessageService. It's important because this method will be triggered after User enable bluetooth or pick a device to connect. So inform Service about the result.
 ```java
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
     mMessageService.onActivityResult(requestCode, resultCode, data);

@@ -4,7 +4,7 @@ Android-BluetoothChat sample wrapped to a library for purpose to simplify messag
 Usage
 ---------------
 Declare into your class member object for Bluetooth and Message Services:
-```
+```java
 private BluetoothMessageService mMessageService;
 private BluetoothAdapterManager mBluetoothAdapterManager;
 ```

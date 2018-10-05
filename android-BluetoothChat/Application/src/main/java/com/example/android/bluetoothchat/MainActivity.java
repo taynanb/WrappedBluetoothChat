@@ -17,7 +17,9 @@
 
 package com.example.android.bluetoothchat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,8 +52,11 @@ public class MainActivity extends SampleActivityBase {
 
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+
             BluetoothChatFragment fragment = new BluetoothChatFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
+            transaction.replace(R.id.sample_content_fragment, fragment,
+                    BluetoothChatFragment.class.getSimpleName());
             transaction.commit();
         }
     }
@@ -106,5 +111,18 @@ public class MainActivity extends SampleActivityBase {
         msgFilter.setNext(logFragment.getLogView());
 
         Log.i(TAG, "Ready");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode");
+
+        Fragment frag = getSupportFragmentManager()
+                .findFragmentByTag(BluetoothChatFragment.class.getSimpleName());
+
+        if(frag != null){
+            frag.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Application" />
-            <option value="$PROJECT_DIR$/bluetoothlemessagelib" />
+            <option value="$PROJECT_DIR$/WrappedBluetoothMessage" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

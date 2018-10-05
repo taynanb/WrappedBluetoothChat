@@ -1,1 +1,1 @@
-include ':Application',':bluetoothlemessagelib'
+include ':Application', ':WrappedBluetoothMessage'

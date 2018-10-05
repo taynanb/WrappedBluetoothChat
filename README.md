@@ -149,3 +149,14 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
     mMessageService.onActivityResult(requestCode, resultCode, data);
 }    
 ```
+
+Use methods to interact with Bluetooth
+```java
+
+// Launch the DeviceListActivity to see devices and do scan.
+// true for secure connection or false for insecure connection.
+mMessageService.startBtConnection(true);
+
+// Ensure this device is discoverable by others
+mMessageService.ensureDiscoverable();
+```

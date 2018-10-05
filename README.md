@@ -150,7 +150,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 }    
 ```
 
-Use methods to interact with Bluetooth
+Use methods to interact with Bluetooth:
 ```java
 
 // Launch the DeviceListActivity to see devices and do scan.
@@ -159,4 +159,17 @@ mMessageService.startBtConnection(true);
 
 // Ensure this device is discoverable by others
 mMessageService.ensureDiscoverable();
+```
+
+Reading connection state:
+```java
+// Use this method do read connection state
+mMessageService.getState()
+
+// Constants that indicate the current connection state
+BluetoothMessageService.STATE_NONE = 0       // we're doing nothing
+BluetoothMessageService.STATE_LISTEN = 1     // now listening for incoming connections
+BluetoothMessageService.STATE_CONNECTING = 2 // now initiating an outgoing connection
+BluetoothMessageService.STATE_CONNECTED = 3  // now connected to a remote device
+
 ```

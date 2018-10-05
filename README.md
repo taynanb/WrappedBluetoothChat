@@ -173,3 +173,19 @@ BluetoothMessageService.STATE_CONNECTING = 2 // now initiating an outgoing conne
 BluetoothMessageService.STATE_CONNECTED = 3  // now connected to a remote device
 
 ```
+
+After connection stabilished send message to another Bluetooth Device
+```java
+private void sendMessage(String message) {
+    // Check that we're actually connected before trying anything
+    if (mMessageService.getState() != BluetoothMessageService.STATE_CONNECTED) {
+        Toast.makeText(getActivity(), R.string.not_connected, Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    // Check that there's actually something to send
+    if (message.length() > 0) {
+        mMessageService.write(message);
+    }
+}
+```

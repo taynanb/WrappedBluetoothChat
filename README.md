@@ -64,7 +64,7 @@ public class BluetoothChatFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mBluetoothAdapterManager != null) {
+        if (mMessageService != null) {
 
             // stop service
             mMessageService.stop();

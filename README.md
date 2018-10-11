@@ -29,13 +29,6 @@ if (!mMessageService.isBtEnabled()) {
 }
 ```
 
-After user enable Bluetooth onActivityForResult() method will be called. Simply call the same method declared in BluetoothMessageService for handle result.
-```java
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    mMessageService.onActivityResult(requestCode, resultCode, data);
-}    
-```
-
 For listen to BluetoothMessageService callbacks, implement BluetoothAdapterListener on your class, override its methods and set the listener implementation into BluetoothAdapterManager.
 ```java
 public class BluetoothChatFragment extends Fragment
@@ -56,14 +49,13 @@ public class BluetoothChatFragment extends Fragment
         if (mMessageService != null) {
 
             mMessageService.setBluetoothAdapterListener(this);
+            mMessageService.setBluetoothDeviceListener(this);
+            mMessageService.setBluetoothMessageListener(this);
 
             // Only if the state is STATE_NONE, do we know that we haven't started already
             if (mMessageService.getState() == BluetoothMessageService.STATE_NONE) {
                 // Start the Bluetooth chat services
                 mMessageService.start();
-
-                mMessageService.setBluetoothDeviceListener(this);
-                mMessageService.setBluetoothMessageListener(this);
             }
         }
     }
@@ -72,7 +64,7 @@ public class BluetoothChatFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mBluetoothAdapterManager != null) {
+        if (mMessageService != null) {
 
             // stop service
             mMessageService.stop();

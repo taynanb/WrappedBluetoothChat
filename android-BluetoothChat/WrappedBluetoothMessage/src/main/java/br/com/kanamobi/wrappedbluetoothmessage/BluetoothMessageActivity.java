@@ -87,7 +87,7 @@ public class BluetoothMessageActivity extends Activity {
         finish();
 
         Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode");
-        BluetoothMessageService.Companion.getInstance().onActivityResult(requestCode, resultCode, data);
+        BluetoothMessageInstance.getInstance().onActivityResult(requestCode, resultCode, data);
 
     }
 }

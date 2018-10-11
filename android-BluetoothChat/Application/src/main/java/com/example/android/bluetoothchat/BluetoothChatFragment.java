@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import com.example.android.common.logger.Log;
 
-import br.com.kanamobi.testandroidplugin.Test;
+import br.com.kanamobi.wrappedbluetoothmessage.BluetoothMessageInstance;
 import br.com.kanamobi.wrappedbluetoothmessage.BluetoothMessageService;
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothAdapterListener;
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothDeviceListener;
@@ -77,7 +77,7 @@ public class BluetoothChatFragment extends Fragment
     private void initBluetoothMessageService() {
         FragmentActivity activity = getActivity();
         try {
-            mMessageService = BluetoothMessageService.Companion.init(activity);
+            mMessageService = BluetoothMessageInstance.init(activity);
         } catch (BluetoothNotAvailableException e) {
             e.printStackTrace();
             Toast.makeText(activity, "Bluetooth is not available", Toast.LENGTH_LONG).show();

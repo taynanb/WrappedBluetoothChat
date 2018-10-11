@@ -103,7 +103,7 @@ class BluetoothMessageService {
     }
 
 
-    private constructor(context: Context, adapter: BluetoothAdapter) {
+    constructor(context: Context, adapter: BluetoothAdapter) {
         this.context = context
         this.adapter = adapter
         Toast.makeText(context, "Constructor", Toast.LENGTH_SHORT).show()
@@ -660,8 +660,6 @@ class BluetoothMessageService {
 
     companion object {
 
-        var instance: BluetoothMessageService? = null
-
         // Debugging
         private const val TAG = "BluetoothChatService"
 
@@ -684,24 +682,6 @@ class BluetoothMessageService {
         const val STATE_CONNECTING = 2 // now initiating an outgoing connection
         const val STATE_CONNECTED = 3  // now connected to a remote device
 
-        @Throws(BluetoothNotAvailableException::class)
-        fun init(context: Context): BluetoothMessageService {
-
-            Toast.makeText(context, "init", Toast.LENGTH_SHORT).show()
-
-            val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-            if(bluetoothAdapter == null){
-                Toast.makeText(context, "Adapter not Present", Toast.LENGTH_SHORT).show()
-                throw BluetoothNotAvailableException()
-            }
-
-            if (instance == null) {
-                instance = BluetoothMessageService(context, bluetoothAdapter)
-            }
-
-            return instance!!
-        }
     }
 
 }

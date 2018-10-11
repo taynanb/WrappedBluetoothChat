@@ -27,6 +27,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import android.widget.Toast
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothAdapterListener
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothDeviceListener
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothMessageListener
@@ -64,6 +65,8 @@ class BluetoothMessageService {
     private var mBluetoothAdapterListener: BluetoothAdapterListener? = null
 
     var mConnectedDeviceName: String? = null
+
+    private val mResultHandler = Handler()
 
     /**
      * The Handler that gets information back from the BluetoothChatService
@@ -103,17 +106,8 @@ class BluetoothMessageService {
     private constructor(context: Context, adapter: BluetoothAdapter) {
         this.context = context
         this.adapter = adapter
+        Toast.makeText(context, "Constructor", Toast.LENGTH_SHORT).show()
     }
-
-
-
-    fun getInstance(): BluetoothMessageService? {
-        return instance
-    }
-
-
-
-
 
 
     /**
@@ -585,36 +579,40 @@ class BluetoothMessageService {
     }
 
     fun requestEnableBt() {
-        val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-        (context as Activity).startActivityForResult(enableIntent, REQUEST_ENABLE_BT)
+        Toast.makeText(context, "requestEnableBt", Toast.LENGTH_SHORT).show()
+        val intent = Intent(context, BluetoothMessageActivity::class.java)
+        intent.putExtra(BluetoothMessageActivity.ARG_ACTION,
+                BluetoothMessageActivity.ACTION_ENABLE_BLUETOOTH)
+        (context as Activity).startActivity(intent)
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mResultHandler.postDelayed({
+            Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode")
 
-        Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode")
-
-        when (requestCode) {
-            REQUEST_CONNECT_DEVICE_SECURE -> {
-                // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK)
-                    connectDevice(data, true)
-            }
-            REQUEST_CONNECT_DEVICE_INSECURE -> {
-                // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK) {
-                    connectDevice(data, false)
+            when (requestCode) {
+                REQUEST_CONNECT_DEVICE_SECURE -> {
+                    // When DeviceListActivity returns with a device to connect
+                    if (resultCode == Activity.RESULT_OK && data != null)
+                        connectDevice(data, true)
                 }
-            }
-
-            REQUEST_ENABLE_BT ->
-                // When the request to enable Bluetooth returns
-                if (resultCode == Activity.RESULT_OK) {
-                    // Bluetooth is now enabled, so set up a chat session
-                    mBluetoothAdapterListener?.onBtEnabled()
-                } else {
-                    mBluetoothAdapterListener?.onBtDisabled()
+                REQUEST_CONNECT_DEVICE_INSECURE -> {
+                    // When DeviceListActivity returns with a device to connect
+                    if (resultCode == Activity.RESULT_OK && data != null) {
+                        connectDevice(data, false)
+                    }
                 }
-        }
+
+                REQUEST_ENABLE_BT ->
+                    // When the request to enable Bluetooth returns
+                    if (resultCode == Activity.RESULT_OK) {
+                        // Bluetooth is now enabled, so set up a chat session
+                        mBluetoothAdapterListener?.onBtEnabled()
+                    } else {
+                        mBluetoothAdapterListener?.onBtDisabled()
+                    }
+            }
+        }, 500)
     }
 
     /**
@@ -652,22 +650,25 @@ class BluetoothMessageService {
      * @param secure boolean that define if new connection will be secure or not
      */
     fun startBtConnection(secure: Boolean) {
-        val serverIntent = Intent(context, DeviceListActivity::class.java)
-        (context as Activity).startActivityForResult(serverIntent,
-                if (secure) REQUEST_CONNECT_DEVICE_SECURE else REQUEST_CONNECT_DEVICE_INSECURE)
+        Toast.makeText(context, "startBtConnection $secure", Toast.LENGTH_SHORT).show()
+        val serverIntent = Intent(context, BluetoothMessageActivity::class.java)
+        serverIntent.putExtra(BluetoothMessageActivity.ARG_ACTION,
+                BluetoothMessageActivity.ACTION_CONNECT_DEVICE)
+        serverIntent.putExtra(BluetoothMessageActivity.ARG_CONNECTION_SECURE, secure)
+        context.startActivity(serverIntent)
     }
 
     companion object {
 
-        private var instance: BluetoothMessageService? = null
+        var instance: BluetoothMessageService? = null
 
         // Debugging
         private const val TAG = "BluetoothChatService"
 
         // Intent request codes
-        private const val REQUEST_CONNECT_DEVICE_SECURE = 1
-        private const val REQUEST_CONNECT_DEVICE_INSECURE = 2
-        private const val REQUEST_ENABLE_BT = 3
+        const val REQUEST_CONNECT_DEVICE_SECURE = 1
+        const val REQUEST_CONNECT_DEVICE_INSECURE = 2
+        const val REQUEST_ENABLE_BT = 3
 
         // Name for the SDP record when creating server socket
         private const val NAME_SECURE = "BluetoothChatSecure"
@@ -686,8 +687,14 @@ class BluetoothMessageService {
         @Throws(BluetoothNotAvailableException::class)
         fun init(context: Context): BluetoothMessageService {
 
+            Toast.makeText(context, "init", Toast.LENGTH_SHORT).show()
+
             val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-                    ?: throw BluetoothNotAvailableException()
+
+            if(bluetoothAdapter == null){
+                Toast.makeText(context, "Adapter not Present", Toast.LENGTH_SHORT).show()
+                throw BluetoothNotAvailableException()
+            }
 
             if (instance == null) {
                 instance = BluetoothMessageService(context, bluetoothAdapter)

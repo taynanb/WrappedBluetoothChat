@@ -1,1 +1,1 @@
-include ':Application', ':WrappedBluetoothMessage'
+include ':Application', ':WrappedBluetoothMessage', ':testandroidplugin'

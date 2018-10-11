@@ -112,17 +112,4 @@ public class MainActivity extends SampleActivityBase {
 
         Log.i(TAG, "Ready");
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode");
-
-        Fragment frag = getSupportFragmentManager()
-                .findFragmentByTag(BluetoothChatFragment.class.getSimpleName());
-
-        if(frag != null){
-            frag.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 }

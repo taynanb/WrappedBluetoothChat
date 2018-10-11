@@ -17,7 +17,6 @@
 package com.example.android.bluetoothchat;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +38,7 @@ import android.widget.Toast;
 
 import com.example.android.common.logger.Log;
 
+import br.com.kanamobi.testandroidplugin.Test;
 import br.com.kanamobi.wrappedbluetoothmessage.BluetoothMessageService;
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothAdapterListener;
 import br.com.kanamobi.wrappedbluetoothmessage.callbacks.BluetoothDeviceListener;
@@ -121,15 +121,15 @@ public class BluetoothChatFragment extends Fragment
         if (mMessageService != null) {
 
             mMessageService.setBluetoothAdapterListener(this);
+            mMessageService.setBluetoothDeviceListener(this);
+            mMessageService.setBluetoothMessageListener(this);
 
             // Only if the state is STATE_NONE, do we know that we haven't started already
             if (mMessageService.getState() == BluetoothMessageService.STATE_NONE) {
                 // Start the Bluetooth chat services
                 mMessageService.start();
-
-                mMessageService.setBluetoothDeviceListener(this);
-                mMessageService.setBluetoothMessageListener(this);
             }
+
         }
     }
 
@@ -241,12 +241,6 @@ public class BluetoothChatFragment extends Fragment
         actionBar.setSubtitle(subTitle);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult() requestCode: $requestCode / resultCode $resultCode");
-        mMessageService.onActivityResult(requestCode, resultCode, data);
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.bluetooth_chat, menu);
@@ -258,11 +252,14 @@ public class BluetoothChatFragment extends Fragment
             case R.id.secure_connect_scan: {
                 // Launch the DeviceListActivity to see devices and do scan
                 mMessageService.startBtConnection(true);
+                //Test.startTestA(getActivity());
+
                 return true;
             }
             case R.id.insecure_connect_scan: {
                 // Launch the DeviceListActivity to see devices and do scan
                 mMessageService.startBtConnection(false);
+                //Test.startTestB(getActivity());
                 return true;
             }
             case R.id.discoverable: {

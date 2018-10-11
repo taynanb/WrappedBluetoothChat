@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.kanamobi.testandroidplugin" >
+
+    <application>
+
+        <activity
+            android:label="Testing"
+            android:name=".TestActivity" />
+
+    </application>
+
+</manifest>

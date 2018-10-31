@@ -14,7 +14,7 @@
             android:theme="@android:style/Theme.Holo.Dialog"/>
 
         <activity
-            android:name=".BluetoothMessageActivity"
+            android:name=".BluetoothConnectionActivity"
             android:configChanges="orientation|keyboardHidden" />
 
     </application>

@@ -101,14 +101,10 @@ public class BluetoothChatFragment extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (mMessageService == null) {
             return;
         }
         mMessageService.stop();
-        mMessageService.setBluetoothDeviceListener(null);
-        mMessageService.setBluetoothMessageListener(null);
-        mMessageService.setBluetoothAdapterListener(null);
     }
 
     @Override
@@ -288,7 +284,7 @@ public class BluetoothChatFragment extends Fragment
     @Override
     public void onDeviceStateConnected(String deviceName) {
         setStatus(getString(R.string.title_connected_to,
-                mMessageService.getMConnectedDeviceName()));
+                mMessageService.getConnectedDeviceName()));
         mConversationArrayAdapter.clear();
     }
 
@@ -321,6 +317,6 @@ public class BluetoothChatFragment extends Fragment
 
     @Override
     public void onMessageRead(String message) {
-        mConversationArrayAdapter.add(mMessageService.getMConnectedDeviceName() + ":  " + message);
+        mConversationArrayAdapter.add(mMessageService.getConnectedDeviceName() + ":  " + message);
     }
 }

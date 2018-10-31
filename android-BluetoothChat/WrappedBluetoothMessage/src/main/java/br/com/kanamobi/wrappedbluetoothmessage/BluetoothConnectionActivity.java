@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 
-public class BluetoothMessageActivity extends Activity {
+public class BluetoothConnectionActivity extends Activity {
 
     private static final String TAG = "BluetoothMessage";
 
